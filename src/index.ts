@@ -1,10 +1,22 @@
 import fs from 'fs'
 import path from 'path'
-
+import crypto from 'crypto'
 
 const calculateHash = (byteArray: [][]) => {
-//    TODO: finish this
+    const hashes = []
 
+    for (const [index, block] of byteArray.entries()) {
+        if (index === 0) {
+            const hashedBlock = crypto.createHash('sha256').update(block.join().toString()).digest('hex')
+            hashes.push(hashedBlock)
+        } else {
+            let blockValue = block.join().toString()
+            const hashedBlock = crypto.createHash('sha256').update(blockValue += hashes[index - 1]).digest('hex')
+            hashes.push(hashedBlock)
+        }
+    }
+
+    return hashes.reverse()
 }
 
 const convertToBlockArray = (array: Buffer) => {
@@ -38,7 +50,7 @@ const start = (): void => {
 
     const byteArray = getByteBlocksArray(path.join(__dirname, '../FuncoesResumo - Hash Functions.mp4'))
 
-    console.log(calculateHash(byteArray.reverse()))
+    console.log(calculateHash(byteArray.reverse())[0])
 }
 
 start()
