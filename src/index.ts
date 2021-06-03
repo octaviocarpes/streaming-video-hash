@@ -10,6 +10,7 @@ const getFileBlocksNumber = file => {
 }
 
 const addFileBlocksToArray = (file, blocksNumber) => {
+    // had help from a classmate in this function
     let count = 0
     const blockArray = []
     const BLOCK_SIZE = 1024
